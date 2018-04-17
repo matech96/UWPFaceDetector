@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    </Grid>
+    <StackPanel>
+        <Button Click="Button_Click">Take a picture</Button>
+        <Canvas x:Name="FaceDrawer" Width="1280" Height="720" Background="Black" Visibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    </StackPanel>
 </Page>
