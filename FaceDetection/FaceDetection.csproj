@@ -112,6 +112,12 @@
     <None Include="FaceDetection_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\admin\WIN_20180417_11_26_46_Pro.jpg" />
+    <Content Include="Assets\admin\WIN_20180417_11_26_48_Pro.jpg" />
+    <Content Include="Assets\admin\WIN_20180417_11_26_49_Pro.jpg" />
+    <Content Include="Assets\admin\WIN_20180417_11_26_52_Pro.jpg" />
+    <Content Include="Assets\admin\WIN_20180417_11_26_53_Pro.jpg" />
+    <Content Include="Assets\admin\WIN_20180417_11_27_03_Pro.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -142,9 +148,7 @@
       <Version>11.0.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\admin\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -7,9 +7,28 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel>
-        <Button Click="Button_Click">Take a picture</Button>
-        <Canvas x:Name="FaceDrawer" Width="1280" Height="720" Background="Black" Visibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-        <!--<Image x:Name="FacePhoto" Width="1280" Height="720" Stretch="Uniform" />-->
-    </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="ButtonCamera" Click="ButtonClickImageSource" Grid.Row="0">Take a picture</Button>
+        <Button x:Name="ButtonFile" Click="ButtonClickImageSource" Grid.Row="1">Open file</Button>
+        <!--<Canvas x:Name="FaceDrawer" Width="1280" Height="720" Background="Black" Visibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>-->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Image x:Name="FacePhoto" Stretch="Uniform" Grid.Column="1" 
+                   HorizontalAlignment="Left" VerticalAlignment="Top" >
+                <!--<Image.Source>-->
+                    
+                    <!--<BitmapImage x:Name="FacePhotoSource" ImageOpened="CalculateScale" />
+                </Image.Source>-->
+            </Image>
+            <!--<Rectangle Width="100" Height="100" Fill="Red" Grid.Column="1"/>-->
+            <Canvas x:Name="FaceDrawer"></Canvas>
+        </Grid>
+    </Grid>
 </Page>

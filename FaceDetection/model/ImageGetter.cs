@@ -22,7 +22,21 @@ namespace FaceDetection.model
 
             StorageFile photoFile = await captureUI.CaptureFileAsync(CameraCaptureUIMode.Photo);
             return photoFile;
+        }
 
+        public static async Task<StorageFile> FromDisk()
+        {
+            var picker = new Windows.Storage.Pickers.FileOpenPicker
+            {
+                ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail,
+                SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary
+            };
+            picker.FileTypeFilter.Add(".jpg");
+            picker.FileTypeFilter.Add(".jpeg");
+            picker.FileTypeFilter.Add(".png");
+
+            StorageFile file = await picker.PickSingleFileAsync();
+            return file;
         }
     }
 }

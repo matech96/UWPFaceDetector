@@ -6,6 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Graphics.Imaging;
+using Windows.Storage;
+using Windows.Storage.Streams;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace FaceDetection.model
 {
@@ -64,7 +68,38 @@ namespace FaceDetection.model
         public static string[] GetAdminsImage()
         {
             const string adminImageDir = @"Assets\admin\";
-            return Directory.GetFiles(adminImageDir, "*.png");
+            return Directory.GetFiles(adminImageDir, "*.jpg");
+        }
+    }
+
+    public class FileFormatUtilities
+    {
+        public static async Task<SoftwareBitmapSource> ToSoftwareBitmapSourceAsync(StorageFile input)
+        {
+            using (IRandomAccessStream fileStream = await input.OpenAsync(FileAccessMode.Read))
+            {
+                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(fileStream);
+
+                BitmapTransform transform = new BitmapTransform();
+                const float sourceImageHeightLimit = 1280;
+
+                if (decoder.PixelHeight > sourceImageHeightLimit)
+                {
+                    float scalingFactor = (float)sourceImageHeightLimit / (float)decoder.PixelHeight;
+                    transform.ScaledWidth = (uint)Math.Floor(decoder.PixelWidth * scalingFactor);
+                    transform.ScaledHeight = (uint)Math.Floor(decoder.PixelHeight * scalingFactor);
+                }
+
+                SoftwareBitmap sourceBitmap = await decoder.GetSoftwareBitmapAsync(decoder.BitmapPixelFormat,
+                    BitmapAlphaMode.Premultiplied,
+                    transform,
+                    ExifOrientationMode.IgnoreExifOrientation,
+                    ColorManagementMode.DoNotColorManage);
+                SoftwareBitmapSource bitmapSource = new SoftwareBitmapSource();
+                await bitmapSource.SetBitmapAsync(sourceBitmap);
+                return bitmapSource;
+            }
+
         }
     }
 }
