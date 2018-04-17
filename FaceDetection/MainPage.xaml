@@ -10,5 +10,6 @@
     <StackPanel>
         <Button Click="Button_Click">Take a picture</Button>
         <Canvas x:Name="FaceDrawer" Width="1280" Height="720" Background="Black" Visibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <!--<Image x:Name="FacePhoto" Width="1280" Height="720" Stretch="Uniform" />-->
     </StackPanel>
 </Page>

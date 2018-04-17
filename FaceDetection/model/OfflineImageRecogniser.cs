@@ -10,10 +10,10 @@ using Windows.Storage.Streams;
 
 namespace FaceDetection.model
 {
-    public class ImageDetector
+    public class OfflineImageRecogniser
     {
         SoftwareBitmap image;
-        public ImageDetector(SoftwareBitmap i_image)
+        public OfflineImageRecogniser(SoftwareBitmap i_image)
         {
             image = i_image;
         }

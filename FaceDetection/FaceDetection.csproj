@@ -98,10 +98,11 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="model\ImageDetector.cs" />
+    <Compile Include="model\OfflineImageRecogniser.cs" />
     <Compile Include="model\ImageGetter.cs" />
-    <Compile Include="model\ImageRecogniser.cs" />
+    <Compile Include="model\OnlineImageRecogniser.cs" />
     <Compile Include="model\NoImageException.cs" />
+    <Compile Include="model\Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +141,9 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>11.0.2</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\admin\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
