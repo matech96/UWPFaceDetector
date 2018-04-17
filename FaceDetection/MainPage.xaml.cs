@@ -1,6 +1,7 @@
 ﻿using FaceDetection.model;
 using Microsoft.ProjectOxford.Face.Contract;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
@@ -20,9 +21,10 @@ namespace FaceDetection
     {
         double widthScale = 1;
         double heightScale = 1;
-        double orgWidth= 0;
-        double orgHeight= 0;
+        double orgWidth = 0;
+        double orgHeight = 0;
         OnlineImageRecogniser recigniser = new OnlineImageRecogniser();
+        List<Tuple<Face, string>> tuples = null;
         public MainPage()
         {
             this.InitializeComponent();
@@ -58,7 +60,6 @@ namespace FaceDetection
 
         private async Task DrawImageAsync(StorageFile photo)
         {
-            FaceDrawer.Children.Clear();
             var stream = await photo.OpenReadAsync();
             BitmapImage imageSource = new BitmapImage();
             //imageSource.CreateOptions = BitmapCreateOptions.None;
@@ -71,32 +72,47 @@ namespace FaceDetection
 
         private void ShowDetectedFaces(Face[] faces, string[] names)
         {
-            if (faces != null)
+            tuples = new List<Tuple<Face, string>>(faces.Zip(names, Tuple.Create));
+            RedrawBoxes();
+        }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            RedrawBoxes();
+        }
+
+        private void RedrawBoxes()
+        {
+            if (tuples == null) return;
+
+            FaceDrawer.Children.Clear();
+            widthScale = FacePhoto.ActualWidth / orgWidth; // TODO: scale calculation might work with outdated data
+            heightScale = FacePhoto.ActualHeight / orgHeight;
+            foreach (var tuple in tuples)
             {
-                foreach (var tuple in faces.Zip(names, Tuple.Create))
-                {
-                    widthScale = FacePhoto.ActualWidth / orgWidth; // TODO: scale calculation might work with outdated data
-                    heightScale = FacePhoto.ActualHeight / orgHeight;
-                    Face face = tuple.Item1;
-                    string name = tuple.Item2;
-                    Rectangle box = new Rectangle();
-                    box.Tag = face.FaceRectangle;
-                    box.Width = (uint)(face.FaceRectangle.Width * widthScale);
-                    box.Height = (uint)(face.FaceRectangle.Height * heightScale);
-                    box.Fill = new SolidColorBrush(Colors.Green);
-                    box.Stroke = new SolidColorBrush(Colors.Green);
-                    box.StrokeThickness = 20;
-                    box.Margin = new Thickness((uint)(face.FaceRectangle.Left * widthScale), (uint)(face.FaceRectangle.Top * heightScale), 0, 0);
-                    RichTextBlock text = new RichTextBlock();
-                    text.Margin = new Thickness((uint)(face.FaceRectangle.Left * widthScale), (uint)(face.FaceRectangle.Top * heightScale), 0, 0);
-                    Paragraph paragraph = new Paragraph();
-                    Run run = new Run();
-                    run.Text = name + FaceUtilities.FaceDescription(face);
-                    paragraph.Inlines.Add(run);
-                    text.Blocks.Add(paragraph);
-                    FaceDrawer.Children.Add(box);
-                    FaceDrawer.Children.Add(text);
-                }
+                Face face = tuple.Item1;
+                string name = tuple.Item2;
+                Rectangle box = new Rectangle();
+                box.Tag = face.FaceRectangle;
+                uint width = (uint)(face.FaceRectangle.Width * widthScale);
+                box.Width = width;
+                uint height = (uint)(face.FaceRectangle.Height * heightScale);
+                box.Height = height;
+                box.Fill = new SolidColorBrush(Colors.Green);
+                box.Stroke = new SolidColorBrush(Colors.Green);
+                box.StrokeThickness = 20;
+                box.Margin = new Thickness((uint)(face.FaceRectangle.Left * widthScale), (uint)(face.FaceRectangle.Top * heightScale), 0, 0);
+                RichTextBlock text = new RichTextBlock();
+                text.Width = width;
+                text.Height = height;
+                text.Margin = new Thickness((uint)(face.FaceRectangle.Left * widthScale), (uint)(face.FaceRectangle.Top * heightScale), 0, 0);
+                Paragraph paragraph = new Paragraph();
+                Run run = new Run();
+                run.Text = name + FaceUtilities.FaceDescription(face);
+                paragraph.Inlines.Add(run);
+                text.Blocks.Add(paragraph);
+                FaceDrawer.Children.Add(box);
+                FaceDrawer.Children.Add(text);
             }
         }
     }
