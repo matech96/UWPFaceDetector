@@ -14,8 +14,10 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button x:Name="ButtonCamera" Click="ButtonClickImageSource" Grid.Row="0">Take a picture</Button>
-        <Button x:Name="ButtonFile" Click="ButtonClickImageSource" Grid.Row="1">Open file</Button>
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="ButtonCamera" Click="ButtonClickImageSource" Grid.Row="0">Take a picture</Button>
+            <Button x:Name="ButtonFile" Click="ButtonClickImageSource" Grid.Row="1">Open file</Button>
+        </StackPanel>
         <!--<Canvas x:Name="FaceDrawer" Width="1280" Height="720" Background="Black" Visibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>-->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -24,12 +26,13 @@
             <Image x:Name="FacePhoto" Stretch="Uniform" Grid.Column="1" 
                    HorizontalAlignment="Left" VerticalAlignment="Top" >
                 <!--<Image.Source>-->
-                    
-                    <!--<BitmapImage x:Name="FacePhotoSource" ImageOpened="CalculateScale" />
+
+                <!--<BitmapImage x:Name="FacePhotoSource" ImageOpened="CalculateScale" />
                 </Image.Source>-->
             </Image>
             <!--<Rectangle Width="100" Height="100" Fill="Red" Grid.Column="1"/>-->
             <Canvas x:Name="FaceDrawer"></Canvas>
+            <ProgressRing x:Name="ProcessingRing" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Grid>
     </Grid>
 </Page>

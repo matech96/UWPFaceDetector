@@ -52,10 +52,12 @@ namespace FaceDetection
         private async Task ProcessPhoto(StorageFile photo)
         {
             await DrawImageAsync(photo);
+            ProcessingRing.IsActive = true;
 
             Face[] detectedFaces = await recigniser.GetFaces(photo);
             string[] names = await recigniser.RecogniseFaces(detectedFaces);
             ShowDetectedFaces(detectedFaces, names);
+            ProcessingRing.IsActive = false;
         }
 
         private async Task DrawImageAsync(StorageFile photo)
