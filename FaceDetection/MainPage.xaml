@@ -22,8 +22,7 @@
         <Viewbox Stretch="Uniform" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.Row="2">
             <Grid>
                 <Image x:Name="FacePhoto" Stretch="Uniform" Grid.Column="1" 
-                   HorizontalAlignment="Center" VerticalAlignment="Top" >
-                </Image>
+                   HorizontalAlignment="Center" VerticalAlignment="Top" />
                 <Canvas x:Name="FaceDrawer" HorizontalAlignment="Center" VerticalAlignment="Top"></Canvas>
             </Grid>
         </Viewbox>

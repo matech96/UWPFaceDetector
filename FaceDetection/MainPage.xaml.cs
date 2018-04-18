@@ -104,34 +104,15 @@ namespace FaceDetection
             {
                 Face face = tuple.Item1;
                 string name = tuple.Item2;
-                Grid box = new Grid();
-                box.Tag = face.FaceRectangle;
+                NameBox nameBox = new NameBox();
                 uint width = (uint)(face.FaceRectangle.Width * widthScale);
-                box.Width = width;
+                nameBox.Width = width;
                 uint height = (uint)(face.FaceRectangle.Height * heightScale);
-                box.Height = height;
-                AcrylicBrush brush = new AcrylicBrush();
-                brush.BackgroundSource = AcrylicBackgroundSource.Backdrop;
-                brush.TintColor = Colors.Black;
-                brush.TintOpacity = 0.25;
-                box.Background = brush;
-                box.Margin = new Thickness((uint)(face.FaceRectangle.Left * widthScale), (uint)(face.FaceRectangle.Top * heightScale), 0, 0);
-                box.Padding = new Thickness(5, 5, 5, 5);
-                ToolTip toolTip = new ToolTip();
-                toolTip.Content = FaceUtilities.FaceDescription(face);
-                ToolTipService.SetToolTip(box, toolTip);
-                Viewbox viewbox = new Viewbox();
-                viewbox.Stretch = Stretch.Uniform;
-                viewbox.StretchDirection = StretchDirection.DownOnly;
-                TextBlock text = new TextBlock();
-                text.Text = name;
-                text.TextWrapping = TextWrapping.Wrap;
-                text.FontSize = box.Height / 4;
-                text.VerticalAlignment = VerticalAlignment.Center;
-                text.HorizontalAlignment = HorizontalAlignment.Center;
-                viewbox.Child = text;
-                box.Children.Add(viewbox);
-                FaceDrawer.Children.Add(box);
+                nameBox.Height = height;
+                nameBox.Margin = new Thickness((uint)(face.FaceRectangle.Left * widthScale), (uint)(face.FaceRectangle.Top * heightScale), 0, 0);
+                nameBox.NameText = name;
+                nameBox.Description = FaceUtilities.FaceDescription(face);
+                FaceDrawer.Children.Add(nameBox);
             }
         }
     }
