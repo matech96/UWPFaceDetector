@@ -24,14 +24,14 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Image x:Name="FacePhoto" Stretch="Uniform" Grid.Column="1" 
-                   HorizontalAlignment="Left" VerticalAlignment="Top" >
+                   HorizontalAlignment="Center" VerticalAlignment="Top" >
                 <!--<Image.Source>-->
 
                 <!--<BitmapImage x:Name="FacePhotoSource" ImageOpened="CalculateScale" />
                 </Image.Source>-->
             </Image>
             <!--<Rectangle Width="100" Height="100" Fill="Red" Grid.Column="1"/>-->
-            <Canvas x:Name="FaceDrawer"></Canvas>
+            <Canvas x:Name="FaceDrawer" HorizontalAlignment="Center" VerticalAlignment="Top"></Canvas>
             <ProgressRing x:Name="ProcessingRing" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Grid>
     </Grid>

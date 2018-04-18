@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Graphics.Imaging;
 using Windows.Storage;
-using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -64,8 +62,6 @@ namespace FaceDetection
         {
             var stream = await photo.OpenReadAsync();
             BitmapImage imageSource = new BitmapImage();
-            //imageSource.CreateOptions = BitmapCreateOptions.None;
-            //imageSource.ImageOpened += CalculateScale;
             await imageSource.SetSourceAsync(stream);
             orgWidth = imageSource.PixelWidth;
             orgHeight = imageSource.PixelHeight;
@@ -90,6 +86,8 @@ namespace FaceDetection
             FaceDrawer.Children.Clear();
             widthScale = FacePhoto.ActualWidth / orgWidth; // TODO: scale calculation might work with outdated data
             heightScale = FacePhoto.ActualHeight / orgHeight;
+            FaceDrawer.Width = FacePhoto.ActualWidth;
+            FaceDrawer.Height = FacePhoto.ActualHeight;
             foreach (var tuple in tuples)
             {
                 Face face = tuple.Item1;
