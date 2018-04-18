@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}"
-    SizeChanged="Page_SizeChanged">
+    >
 
     <Grid>
         <Grid.RowDefinitions>
@@ -19,15 +19,14 @@
             <AppBarButton x:Name="ButtonCamera" Icon="Camera" Label="Take a picture" Click="ButtonClickImageSource" VerticalAlignment="Stretch"/>
             <AppBarButton x:Name="ButtonFile" Icon="OpenFile" Label="Open a file" Click="ButtonClickImageSource" VerticalAlignment="Stretch"/>
         </CommandBar>
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Image x:Name="FacePhoto" Stretch="Uniform" Grid.Column="1" 
+        <Viewbox Stretch="Uniform" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.Row="2">
+            <Grid>
+                <Image x:Name="FacePhoto" Stretch="Uniform" Grid.Column="1" 
                    HorizontalAlignment="Center" VerticalAlignment="Top" >
-            </Image>
-            <Canvas x:Name="FaceDrawer" HorizontalAlignment="Center" VerticalAlignment="Top"></Canvas>
-            <ProgressRing x:Name="ProcessingRing" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        </Grid>
+                </Image>
+                <Canvas x:Name="FaceDrawer" HorizontalAlignment="Center" VerticalAlignment="Top"></Canvas>
+            </Grid>
+        </Viewbox>
+        <ProgressRing x:Name="ProcessingRing" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2"/>
     </Grid>
 </Page>

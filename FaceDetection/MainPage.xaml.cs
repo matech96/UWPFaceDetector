@@ -34,8 +34,8 @@ namespace FaceDetection
         private async void ButtonClickImageSource(object sender, RoutedEventArgs _)
         {
             ProcessingRing.IsActive = true;
-            try
-            {
+            //try
+            //{
                 StorageFile photo = null;
                 if (sender == ButtonCamera)
                 {
@@ -50,12 +50,12 @@ namespace FaceDetection
                 {
                     await ProcessPhoto(photo);
                 }
-            }
-            catch (Exception e)
-            {
-                var dialog = new MessageDialog(e.ToString());
-                await dialog.ShowAsync();
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    var dialog = new MessageDialog(e.ToString());
+            //    await dialog.ShowAsync();
+            //}
             ProcessingRing.IsActive = false;
 
         }
@@ -104,7 +104,7 @@ namespace FaceDetection
             {
                 Face face = tuple.Item1;
                 string name = tuple.Item2;
-                Rectangle box = new Rectangle();
+                Grid box = new Grid();
                 box.Tag = face.FaceRectangle;
                 uint width = (uint)(face.FaceRectangle.Width * widthScale);
                 box.Width = width;
@@ -114,23 +114,24 @@ namespace FaceDetection
                 brush.BackgroundSource = AcrylicBackgroundSource.Backdrop;
                 brush.TintColor = Colors.Black;
                 brush.TintOpacity = 0.25;
-                box.Fill = brush;
+                box.Background = brush;
                 box.Margin = new Thickness((uint)(face.FaceRectangle.Left * widthScale), (uint)(face.FaceRectangle.Top * heightScale), 0, 0);
+                box.Padding = new Thickness(5, 5, 5, 5);
                 ToolTip toolTip = new ToolTip();
                 toolTip.Content = FaceUtilities.FaceDescription(face);
                 ToolTipService.SetToolTip(box, toolTip);
-                RichTextBlock text = new RichTextBlock();
-                text.Width = width;
-                text.Height = height;
-                text.Margin = new Thickness((uint)(face.FaceRectangle.Left * widthScale), (uint)(face.FaceRectangle.Top * heightScale), 0, 0);
-                Paragraph paragraph = new Paragraph();
-                Run run = new Run();
-                run.Text = FaceUtilities.FaceDescription(face);
-                paragraph.Inlines.Add(run);
-                text.Blocks.Add(paragraph);
-
+                Viewbox viewbox = new Viewbox();
+                viewbox.Stretch = Stretch.Uniform;
+                viewbox.StretchDirection = StretchDirection.DownOnly;
+                TextBlock text = new TextBlock();
+                text.Text = name;
+                text.TextWrapping = TextWrapping.Wrap;
+                text.FontSize = box.Height / 4;
+                text.VerticalAlignment = VerticalAlignment.Center;
+                text.HorizontalAlignment = HorizontalAlignment.Center;
+                viewbox.Child = text;
+                box.Children.Add(viewbox);
                 FaceDrawer.Children.Add(box);
-                FaceDrawer.Children.Add(text);
             }
         }
     }
