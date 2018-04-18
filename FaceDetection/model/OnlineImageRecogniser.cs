@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
@@ -52,6 +53,7 @@ namespace FaceDetection.model
 
         public async Task<Face[]> GetFaces(StorageFile image)
         {
+            //for(int i = 0; i < 10e8; i++) { }
             IEnumerable<FaceAttributeType> faceAttributes =
                 new FaceAttributeType[] { FaceAttributeType.Gender,
                     FaceAttributeType.Age,

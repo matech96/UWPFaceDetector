@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
@@ -30,32 +31,43 @@ namespace FaceDetection
             recigniser.TrainFaces(images);
         }
 
-        private async void ButtonClickImageSource(object sender, RoutedEventArgs e)
+        private async void ButtonClickImageSource(object sender, RoutedEventArgs _)
         {
-            StorageFile photo = null;
-            if (sender == ButtonCamera)
+            ProcessingRing.IsActive = true;
+            try
             {
-                photo = await ImageGetter.FromCamera();
-            }
-            else if (sender == ButtonFile)
-            {
-                photo = await ImageGetter.FromDisk();
-            }
+                StorageFile photo = null;
+                if (sender == ButtonCamera)
+                {
+                    photo = await ImageGetter.FromCamera();
+                }
+                else if (sender == ButtonFile)
+                {
+                    photo = await ImageGetter.FromDisk();
+                }
 
-            if (photo == null) return;
-            await ProcessPhoto(photo);
+                if (photo != null)
+                {
+                    await ProcessPhoto(photo);
+                }
+            }
+            catch (Exception e)
+            {
+                var dialog = new MessageDialog(e.ToString());
+                await dialog.ShowAsync();
+            }
+            ProcessingRing.IsActive = false;
 
         }
 
         private async Task ProcessPhoto(StorageFile photo)
         {
             await DrawImageAsync(photo);
-            ProcessingRing.IsActive = true;
 
             Face[] detectedFaces = await recigniser.GetFaces(photo);
             string[] names = await recigniser.RecogniseFaces(detectedFaces);
             ShowDetectedFaces(detectedFaces, names);
-            ProcessingRing.IsActive = false;
+
         }
 
         private async Task DrawImageAsync(StorageFile photo)
@@ -98,19 +110,25 @@ namespace FaceDetection
                 box.Width = width;
                 uint height = (uint)(face.FaceRectangle.Height * heightScale);
                 box.Height = height;
-                box.Fill = new SolidColorBrush(Colors.Green);
-                box.Stroke = new SolidColorBrush(Colors.Green);
-                box.StrokeThickness = 20;
+                AcrylicBrush brush = new AcrylicBrush();
+                brush.BackgroundSource = AcrylicBackgroundSource.Backdrop;
+                brush.TintColor = Colors.Black;
+                brush.TintOpacity = 0.25;
+                box.Fill = brush;
                 box.Margin = new Thickness((uint)(face.FaceRectangle.Left * widthScale), (uint)(face.FaceRectangle.Top * heightScale), 0, 0);
+                ToolTip toolTip = new ToolTip();
+                toolTip.Content = FaceUtilities.FaceDescription(face);
+                ToolTipService.SetToolTip(box, toolTip);
                 RichTextBlock text = new RichTextBlock();
                 text.Width = width;
                 text.Height = height;
                 text.Margin = new Thickness((uint)(face.FaceRectangle.Left * widthScale), (uint)(face.FaceRectangle.Top * heightScale), 0, 0);
                 Paragraph paragraph = new Paragraph();
                 Run run = new Run();
-                run.Text = name + FaceUtilities.FaceDescription(face);
+                run.Text = FaceUtilities.FaceDescription(face);
                 paragraph.Inlines.Add(run);
                 text.Blocks.Add(paragraph);
+
                 FaceDrawer.Children.Add(box);
                 FaceDrawer.Children.Add(text);
             }
