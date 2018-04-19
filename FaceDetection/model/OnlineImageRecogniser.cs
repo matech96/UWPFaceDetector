@@ -53,7 +53,6 @@ namespace FaceDetection.model
 
         public async Task<Face[]> GetFaces(StorageFile image)
         {
-            //for(int i = 0; i < 10e8; i++) { }
             IEnumerable<FaceAttributeType> faceAttributes =
                 new FaceAttributeType[] { FaceAttributeType.Gender,
                     FaceAttributeType.Age,
