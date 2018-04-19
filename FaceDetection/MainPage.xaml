@@ -23,7 +23,7 @@
             <Grid>
                 <Image x:Name="FacePhoto" Stretch="Uniform" Grid.Column="1" 
                    HorizontalAlignment="Center" VerticalAlignment="Top" />
-                <Canvas x:Name="FaceDrawer" HorizontalAlignment="Center" VerticalAlignment="Top"></Canvas>
+                <Grid x:Name="FaceDrawer" HorizontalAlignment="Center" VerticalAlignment="Top"></Grid>
             </Grid>
         </Viewbox>
         <ProgressRing x:Name="ProcessingRing" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2"/>

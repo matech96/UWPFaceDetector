@@ -36,20 +36,21 @@ namespace FaceDetection
             ProcessingRing.IsActive = true;
             //try
             //{
-                StorageFile photo = null;
-                if (sender == ButtonCamera)
-                {
-                    photo = await ImageGetter.FromCamera();
-                }
-                else if (sender == ButtonFile)
-                {
-                    photo = await ImageGetter.FromDisk();
-                }
+            StorageFile photo = null;
+            if (sender == ButtonCamera)
+            {
+                photo = await ImageGetter.FromCamera();
+            }
+            else if (sender == ButtonFile)
+            {
+                photo = await ImageGetter.FromDisk();
+            }
 
-                if (photo != null)
-                {
-                    await ProcessPhoto(photo);
-                }
+            if (photo != null)
+            {
+                FaceDrawer.Children.Clear();
+                await ProcessPhoto(photo);
+            }
             //}
             //catch (Exception e)
             //{
@@ -95,7 +96,6 @@ namespace FaceDetection
         {
             if (tuples == null) return;
 
-            FaceDrawer.Children.Clear();
             widthScale = FacePhoto.ActualWidth / orgWidth; // TODO: scale calculation might work with outdated data
             heightScale = FacePhoto.ActualHeight / orgHeight;
             FaceDrawer.Width = FacePhoto.ActualWidth;
@@ -105,11 +105,11 @@ namespace FaceDetection
                 Face face = tuple.Item1;
                 string name = tuple.Item2;
                 NameBox nameBox = new NameBox();
-                uint width = (uint)(face.FaceRectangle.Width * widthScale);
-                nameBox.Width = width;
-                uint height = (uint)(face.FaceRectangle.Height * heightScale);
-                nameBox.Height = height;
-                nameBox.Margin = new Thickness((uint)(face.FaceRectangle.Left * widthScale), (uint)(face.FaceRectangle.Top * heightScale), 0, 0);
+                nameBox.Width = face.FaceRectangle.Width;// * widthScale;
+                nameBox.Height = face.FaceRectangle.Height;// * heightScale;
+                nameBox.VerticalAlignment = VerticalAlignment.Top;
+                nameBox.HorizontalAlignment = HorizontalAlignment.Left;
+                nameBox.Margin = new Thickness(face.FaceRectangle.Left /** widthScale*/, face.FaceRectangle.Top /** heightScale*/, 0, 0);
                 nameBox.NameText = name;
                 nameBox.Description = FaceUtilities.FaceDescription(face);
                 FaceDrawer.Children.Add(nameBox);
